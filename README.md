@@ -2,6 +2,16 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+## Node and NPM Versions
+
+   ```bash
+   npm - v10.9.2
+   ```
+
+   ```bash
+   node - v22.16.0
+   ```
+
 ## Get started
 
 1. Install dependencies

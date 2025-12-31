@@ -5,7 +5,9 @@ import { HelloWave } from "@/components/hello-wave";
 import ParallaxScrollView from "@/components/parallax-scroll-view";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+
 import HelloCard from "@/components/HelloCard";
+import EventList from "../event-list";
 
 export default function HomeScreen() {
   return (
@@ -24,6 +26,9 @@ export default function HomeScreen() {
         </ThemedText>
         <ThemedText type="subtitle">By Giovanni Iervolino</ThemedText>
         <HelloCard name="Giovanni" />
+      </ThemedView>
+      <ThemedView>
+        <EventList />
       </ThemedView>
       {/* <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Welcome!</ThemedText>

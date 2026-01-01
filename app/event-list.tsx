@@ -1,76 +1,146 @@
-import { ThemedView } from "@/components/themed-view";
-import { ThemedText } from "@/components/themed-text";
-import { FlatList, StyleSheet } from "react-native";
 import EventCard from "@/components/EventCard";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import { router } from "expo-router";
+import { useState } from "react";
+import { FlatList, Pressable, StyleSheet } from "react-native";
 
 const events = [
   {
-    id: '1',
-    name: 'Volunteer Orientation',
-    date: 'Jan 15, 2025',
-    location: 'Rush Building',
+    id: "1",
+    name: "Volunteer Orientation",
+    date: "Jan 15, 2025",
+    location: "Rush Building",
   },
   {
-    id: '2',
-    name: 'Community Outreach',
-    date: 'Jan 18, 2025',
-    location: 'West Philly',
+    id: "2",
+    name: "Community Outreach",
+    date: "Jan 18, 2025",
+    location: "West Philly",
   },
   {
-    id: '3',
-    name: 'Hack4Impact Workshop',
-    date: 'Jan 22, 2025',
-    location: 'LeBow Hall',
+    id: "3",
+    name: "Hack4Impact Workshop",
+    date: "Jan 22, 2025",
+    location: "LeBow Hall",
   },
   {
-    id: '4',
-    name: 'Nonprofit Partner Meeting',
-    date: 'Jan 25, 2025',
-    location: 'Zoom',
+    id: "4",
+    name: "Nonprofit Partner Meeting",
+    date: "Jan 25, 2025",
+    location: "Zoom",
   },
   {
-    id: '5',
-    name: 'Frontend Sync',
-    date: 'Jan 28, 2025',
-    location: 'MacAlister Hall',
+    id: "5",
+    name: "Frontend Sync",
+    date: "Jan 28, 2025",
+    location: "MacAlister Hall",
   },
   {
-    id: '6',
-    name: 'Semester Kickoff',
-    date: 'Feb 1, 2025',
-    location: 'Main Auditorium',
+    id: "6",
+    name: "Semester Kickoff",
+    date: "Feb 1, 2025",
+    location: "Main Auditorium",
   },
 ];
 
-export default function EventList(){
-    return(
-        <ThemedView>
-            {/* .map version commented out below */}
-            {/* {events.length === 0 ? (
+export default function EventList() {
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const selectedEvent = events.find((event) => event.id === selectedEventId);
+
+  const handleGoToEventHome = () => {
+    // If nothing is selected, still navigate, but pass nothing
+    // You could also block navigation here instead, but this is simplest and safe.
+    if (!selectedEventId) {
+      router.push("/event-home");
+      return;
+    }
+
+    // Pass the selected event id as a route param
+    router.push({
+      pathname: "/event-home",
+      params: { eventId: selectedEventId },
+    });
+  };
+
+  return (
+    <ThemedView style={styles.container}>
+      <ThemedView style={styles.titleContainer}>
+        <ThemedText type="title">
+          {`Selected: ${selectedEvent ? selectedEvent.name : "none"}`}
+        </ThemedText>
+
+        <Pressable
+          onPress={handleGoToEventHome}
+          disabled={!selectedEventId}
+          style={({ pressed }) => [
+            styles.goButton,
+            !selectedEventId && styles.goButtonDisabled,
+            pressed && selectedEventId && styles.goButtonPressed,
+          ]}
+        >
+          <ThemedText type="subtitle">Go to Event Home</ThemedText>
+        </Pressable>
+      </ThemedView>
+      {/* .map version commented out below */}
+      {/* {events.length === 0 ? (
                 <ThemedText>No events available</ThemedText>
             ) :
-                (events.map(even =>(
+                (events.map(event =>(
                     <EventCard
-                        key={even.id}
-                        name={even.name}
-                        date={even.date}
-                        location={even.location}
+                        key={event.id}
+                        name={event.name}
+                        date={event.date}
+                        location={event.location}
+                        isPressed={event.id === selectedEventId}
                     />
                 ))
            )} */}
-            <FlatList
-                data = {events}
-                renderItem = {({item}) => (
-                    <EventCard
-                        name={item.name}
-                        date={item.date}
-                        location={item.location}
-                    />
-                )}
-                keyExtractor = {(item) => item.id}
-                ListEmptyComponent={<ThemedText>No events available</ThemedText>}
+      <FlatList
+        data={events}
+        keyExtractor={(item) => item.id}
+        ListEmptyComponent={<ThemedText>No events available</ThemedText>}
+        contentContainerStyle={styles.listContent}
+        renderItem={({ item }) => (
+          <Pressable onPress={() => setSelectedEventId(item.id)}>
+            <EventCard
+              name={item.name}
+              date={item.date}
+              location={item.location}
+              isPressed={item.id === selectedEventId}
             />
-        </ThemedView>
-    );
-};
+          </Pressable>
+        )}
+      />
+    </ThemedView>
+  );
+}
 
+const styles = StyleSheet.create({
+  titleContainer: {
+    //flexDirection: 'row',
+    alignItems: "flex-start",
+    gap: 10,
+    marginBottom: 12,
+  },
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  goButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignSelf: "flex-start",
+  },
+  goButtonPressed: {
+    opacity: 0.8,
+  },
+  goButtonDisabled: {
+    opacity: 0.5,
+  },
+  listContent: {
+    paddingBottom: 100,
+  },
+});

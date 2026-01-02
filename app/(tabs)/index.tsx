@@ -19,7 +19,7 @@ export default function HomeScreen() {
         <ThemedText type="subtitle">By Giovanni Iervolino</ThemedText>
         <HelloCard name="Giovanni" />
       </ThemedView> */}
-      <ThemedView>
+      <ThemedView style={{ flex: 1 }}>
         <EventList />
       </ThemedView>
     </SafeAreaView>

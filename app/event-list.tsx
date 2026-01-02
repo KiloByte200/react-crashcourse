@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { router } from "expo-router";
 import { useState } from "react";
-import { FlatList, Pressable, StyleSheet } from "react-native";
+import { FlatList, Pressable, StyleSheet, TextInput } from "react-native";
 
 const events = [
   {
@@ -47,6 +47,7 @@ const events = [
 export default function EventList() {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const selectedEvent = events.find((event) => event.id === selectedEventId);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleGoToEventHome = () => {
     // If nothing is selected, still navigate, but pass nothing
@@ -63,12 +64,26 @@ export default function EventList() {
     });
   };
 
+  const filteredEvents =
+    searchQuery.trim().length === 0
+      ? events
+      : events.filter((event) =>
+          event.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">
           {`Selected: ${selectedEvent ? selectedEvent.name : "none"}`}
         </ThemedText>
+        <TextInput
+          style={[styles.searchInput, { color: "#fff" }]}
+          placeholder="Search events..."
+          placeholderTextColor="#9a9a9a"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
 
         <Pressable
           onPress={handleGoToEventHome}
@@ -82,22 +97,10 @@ export default function EventList() {
           <ThemedText type="subtitle">Go to Event Home</ThemedText>
         </Pressable>
       </ThemedView>
-      {/* .map version commented out below */}
-      {/* {events.length === 0 ? (
-                <ThemedText>No events available</ThemedText>
-            ) :
-                (events.map(event =>(
-                    <EventCard
-                        key={event.id}
-                        name={event.name}
-                        date={event.date}
-                        location={event.location}
-                        isPressed={event.id === selectedEventId}
-                    />
-                ))
-           )} */}
+
       <FlatList
-        data={events}
+        style={{ flex: 1 }}
+        data={filteredEvents}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={<ThemedText>No events available</ThemedText>}
         contentContainerStyle={styles.listContent}
@@ -126,6 +129,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    gap: 12,
   },
   goButton: {
     paddingVertical: 10,
@@ -142,5 +146,12 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingBottom: 100,
+  },
+  searchInput: {
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    width: "100%",
   },
 });

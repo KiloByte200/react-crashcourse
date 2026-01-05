@@ -8,6 +8,7 @@ import { ThemedView } from "@/components/themed-view";
 
 // import HelloCard from "@/components/HelloCard";
 import EventList from "../event-list";
+import Register from "../register";
 
 export default function HomeScreen() {
   return (
@@ -20,7 +21,8 @@ export default function HomeScreen() {
         <HelloCard name="Giovanni" />
       </ThemedView> */}
       <ThemedView style={{ flex: 1 }}>
-        <EventList />
+        {/* <EventList /> */}
+        <Register/>
       </ThemedView>
     </SafeAreaView>
   );

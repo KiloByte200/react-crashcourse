@@ -25,12 +25,12 @@ export default function HomeScreen() {
         <HelloCard name="Giovanni" />
       </ThemedView> */}
       <ThemedView style={{ flex: 1 }}>
-        {/* <EventList /> */}
-        {token ? (
+        <EventList />
+        {/* {token ? (
           <MyQR token={token} onStartOver={() => setToken(null)} />
         ) : (
           <Register onSuccess={setToken} />
-        )}
+        )} */}
       </ThemedView>
     </SafeAreaView>
   );

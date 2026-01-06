@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
-
+import HeadcountCard from "@/components/HeadcountCard";
 
 const events = [
   {
@@ -43,7 +43,6 @@ const events = [
   },
 ];
 
-
 export default function EventHome() {
   const params = useLocalSearchParams<{ eventId?: string }>();
   const eventId = params.eventId;
@@ -61,6 +60,8 @@ export default function EventHome() {
       <ThemedText type="subtitle">
         {`Selected event name: ${selectedEvent ? selectedEvent.name : "none"}`}
       </ThemedText>
+
+      <HeadcountCard eventId={eventId}></HeadcountCard>
     </ThemedView>
   );
 }

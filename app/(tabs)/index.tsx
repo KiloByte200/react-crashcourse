@@ -9,8 +9,12 @@ import { ThemedView } from "@/components/themed-view";
 // import HelloCard from "@/components/HelloCard";
 import EventList from "../event-list";
 import Register from "../register";
+import { useState } from "react";
+import MyQR from "../myqr";
 
 export default function HomeScreen() {
+  const [token, setToken] = useState<string | null>(null);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* <ThemedView style={styles.titleContainer}>
@@ -22,7 +26,11 @@ export default function HomeScreen() {
       </ThemedView> */}
       <ThemedView style={{ flex: 1 }}>
         {/* <EventList /> */}
-        <Register/>
+        {token ? (
+          <MyQR token={token} onStartOver={() => setToken(null)} />
+        ) : (
+          <Register onSuccess={setToken} />
+        )}
       </ThemedView>
     </SafeAreaView>
   );

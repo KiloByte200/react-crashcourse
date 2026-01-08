@@ -7,7 +7,7 @@ export default function MyQR({
   onStartOver,
 }: {
   token: string;
-  onStartOver: () => void;
+  onStartOver: () => Promise<void>;
 }) {
   return (
     <ThemedView style={styles.container}>
